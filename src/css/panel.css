@@ -1,0 +1,138 @@
+/* ===== Panel del cliente ===== */
+
+.panel-principal {
+  padding: 2rem 0;
+}
+
+.panel-bienvenida {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.panel-bienvenida h1 {
+  color: var(--azul-oscuro);
+  font-size: 1.7rem;
+  margin-bottom: 0.2rem;
+}
+
+.panel-bienvenida p {
+  color: var(--gris-texto);
+  margin: 0;
+}
+
+.panel-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1.2rem;
+  align-items: start;
+}
+
+.tarjeta-producto {
+  background: linear-gradient(135deg, var(--azul-rey) 50%, var(--violeta) 50%);
+  color: var(--blanco);
+  border-radius: var(--radio-tarjeta);
+  padding: 1.5rem;
+  min-height: 190px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.tarjeta-producto h2 {
+  color: var(--blanco);
+  font-size: 1.2rem;
+}
+
+.tarjeta-producto .etiqueta {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+.numero-producto {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.panel-tarjeta {
+  background-color: var(--blanco);
+  border: 1px solid var(--azul-borde);
+  border-radius: var(--radio-tarjeta);
+  padding: 1.2rem;
+}
+
+.panel-tarjeta h2 {
+  font-size: 1.05rem;
+  color: var(--azul-rey);
+  margin-bottom: 0.6rem;
+}
+
+.dato {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid var(--azul-claro);
+  font-size: 0.95rem;
+}
+
+.dato span:first-child {
+  color: var(--gris-texto);
+}
+
+.dato span:last-child {
+  font-weight: 700;
+  color: var(--azul-oscuro);
+  text-align: right;
+}
+
+.acciones-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-top: 1.2rem;
+}
+
+.accion {
+  display: block;
+  padding: 1rem;
+  background-color: var(--blanco);
+  border: 1px solid var(--azul-borde);
+  border-radius: var(--radio);
+  color: var(--azul-oscuro);
+  font-weight: 700;
+}
+
+.accion:hover {
+  border-color: var(--violeta);
+}
+
+.accion span {
+  display: block;
+  font-weight: 400;
+  font-size: 0.85rem;
+  color: var(--gris-texto);
+  margin-top: 0.2rem;
+}
+
+.accion-proximamente {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .panel-grid,
+  .acciones-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .numero-producto {
+    font-size: 1.05rem;
+  }
+}

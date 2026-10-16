@@ -1,0 +1,153 @@
+/* ===== Ocultar el menú hamburguesa en pantallas grandes ===== */
+.menu-hamburguesa {
+  display: none;
+}
+
+/* ===== Tablet (hasta 1024px) ===== */
+@media (max-width: 1024px) {
+  .pie-contenido {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .productos-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ===== Tablet vertical (hasta 900px) ===== */
+@media (max-width: 900px) {
+  .banner {
+    grid-template-columns: 1fr;
+  }
+
+  .banner-imagenes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .banner-imagenes .imagen-persona {
+    grid-column: 1 / -1;
+  }
+
+  .tarjetas-imagenes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .seccion-institucional {
+    grid-template-columns: 1fr;
+  }
+
+  .promocion-detalle {
+    grid-template-columns: 1fr;
+  }
+
+  .promocion-foto img {
+    height: auto;
+  }
+}
+
+/* ===== Celular (hasta 768px) ===== */
+@media (max-width: 768px) {
+  .encabezado-contenido {
+    position: relative;
+  }
+
+  .logo-img {
+    height: 40px;
+  }
+
+  .menu-hamburguesa {
+    display: block;
+    background: none;
+    border: none;
+    color: var(--blanco);
+    font-size: 1.8rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .menu-navegacion {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding: 1rem;
+    background-color: var(--azul-rey);
+    box-shadow: 0 8px 16px rgba(31, 47, 107, 0.25);
+    z-index: 100;
+  }
+
+  .menu-navegacion.abierto {
+    display: flex;
+  }
+
+  .menu-navegacion a {
+    color: var(--blanco);
+  }
+
+  .contenedor {
+    padding: 1rem;
+  }
+
+  .banner {
+    padding: 1.2rem;
+    gap: 1.2rem;
+  }
+
+  .banner-imagenes {
+    grid-template-columns: 1fr;
+  }
+
+  .tarjetas-imagenes {
+    grid-template-columns: 1fr;
+  }
+
+  .texto-sobre-imagen {
+    font-size: 0.95rem;
+  }
+
+  .servicios-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .servicio-imagen img {
+    height: 150px;
+  }
+
+  .productos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .seccion-institucional,
+  .bloque-beneficios,
+  .promocion-detalle {
+    padding: 1.2rem;
+  }
+
+  .pie-contenido {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  h1 {
+    font-size: 1.6rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+}
+
+/* ===== Celular pequeño (hasta 380px) ===== */
+@media (max-width: 380px) {
+  .contenedor {
+    padding: 0.8rem;
+  }
+
+  .logo-img {
+    height: 34px;
+  }
+}

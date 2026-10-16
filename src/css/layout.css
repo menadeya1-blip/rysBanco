@@ -1,0 +1,135 @@
+.encabezado {
+  background-color: var(--azul-rey);
+  color: var(--blanco);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.encabezado-contenido {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.6rem 1.5rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  height: 60px;
+  width: auto;
+  max-width: none;
+  display: block;
+  object-fit: contain;
+}
+
+@media (max-width: 600px) {
+  .logo-img {
+    height: 44px;
+  }
+}
+
+.menu-navegacion {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  list-style: none;
+}
+
+.menu-navegacion a {
+  color: var(--blanco);
+  font-size: 0.95rem;
+}
+
+.menu-navegacion a:hover {
+  text-decoration: underline;
+}
+
+.menu-navegacion .btn-secundario {
+  background-color: var(--violeta);
+  color: var(--blanco);
+  border: none;
+}
+
+.menu-hamburguesa {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--blanco);
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+.contenedor {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.pie-pagina {
+  background-color: var(--azul-rey);
+  color: var(--blanco);
+  padding: 1.2rem 1.5rem;
+  margin-top: 2rem;
+}
+
+.pie-contenido {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.pie-pagina h4 {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 0.4rem;
+}
+
+.pie-pagina p,
+.pie-pagina a {
+  color: var(--blanco);
+  font-size: 0.85rem;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.pie-pagina a:hover {
+  text-decoration: underline;
+}
+
+/* ===== Iconos de redes sociales en el pie de página ===== */
+.redes-iconos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+
+.redes-iconos a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  background-color: var(--blanco);
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+}
+
+.redes-iconos a:hover,
+.redes-iconos a:focus-visible {
+  transform: scale(1.1);
+}
+
+.redes-iconos img {
+  width: 22px;
+  height: 22px;
+}

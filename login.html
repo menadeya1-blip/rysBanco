@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar sesión | &rys Banco</title>
+  <link rel="stylesheet" href="src/css/variables.css">
+  <link rel="stylesheet" href="src/css/base.css">
+  <link rel="stylesheet" href="src/css/layout.css">
+  <link rel="stylesheet" href="src/css/auth.css">
+  <link rel="stylesheet" href="src/css/interactivo.css">
+  <link rel="stylesheet" href="src/css/responsive.css">
+</head>
+<body>
+
+  <header class="encabezado">
+    <div class="encabezado-contenido contenedor">
+      <a href="index.html" class="logo">
+        <img src="src/assets/img/logo.jpg" alt="&rys Banco" class="logo-img">
+      </a>
+      <button class="menu-hamburguesa" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="menu-navegacion">
+        <a href="index.html">Inicio</a>
+        <a href="login.html" class="activo">Iniciar sesión</a>
+        <a href="registro.html">Crear cuenta</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="auth-principal">
+    <section class="auth-tarjeta">
+      <div class="auth-franja">
+        <h1>Bienvenido</h1>
+        <p>Ingresa con tu usuario y contraseña.</p>
+      </div>
+
+      <form id="form-login" class="auth-formulario" novalidate>
+
+        <div class="campo">
+          <label for="usuario">Usuario</label>
+          <input type="text" id="usuario" name="usuario" autocomplete="username" required>
+        </div>
+
+        <div class="campo">
+          <label for="contrasena">Contraseña</label>
+          <input type="password" id="contrasena" name="contrasena" autocomplete="current-password" required>
+        </div>
+
+        <p id="contador-intentos" class="ayuda-campo" aria-live="polite"></p>
+        <p id="mensaje-formulario" class="mensaje-error" role="alert" hidden></p>
+
+        <button type="submit" id="boton-ingresar" class="btn btn-primario btn-bloque">Ingresar</button>
+
+        <p class="auth-pie">
+          ¿No tienes cuenta? <a href="registro.html">Créala aquí</a>
+        </p>
+      </form>
+    </section>
+  </main>
+
+  <div class="toasts" aria-live="polite"></div>
+
+  <script type="module">
+    import { AutenticacionService } from './src/js/services/AutenticacionService.js';
+    import { Mensajes } from './src/js/ui/mensajes.js';
+
+    const formulario = document.getElementById('form-login');
+    const campoUsuario = document.getElementById('usuario');
+    const campoContrasena = document.getElementById('contrasena');
+    const mensajeFormulario = document.getElementById('mensaje-formulario');
+    const contador = document.getElementById('contador-intentos');
+    const boton = document.getElementById('boton-ingresar');
+
+    let temporizador = null;
+
+    const mostrarError = (texto) => {
+      mensajeFormulario.textContent = texto;
+      mensajeFormulario.hidden = false;
+    };
+
+    const ocultarError = () => {
+      mensajeFormulario.hidden = true;
+    };
+
+    const actualizarContador = () => {
+      const usuario = campoUsuario.value.trim();
+      if (!usuario) {
+        contador.textContent = `Tienes ${AutenticacionService.MAX_INTENTOS} intentos.`;
+        boton.disabled = false;
+        return;
+      }
+
+      const estado = AutenticacionService.estado(usuario);
+
+      if (estado.bloqueada) {
+        const minutos = Math.floor(estado.segundosBloqueo / 60);
+        const segundos = String(estado.segundosBloqueo % 60).padStart(2, '0');
+        contador.textContent = `Cuenta bloqueada. Intenta de nuevo en ${minutos}:${segundos}.`;
+        boton.disabled = true;
+      } else {
+        contador.textContent = `Intentos restantes: ${estado.intentosRestantes} de ${AutenticacionService.MAX_INTENTOS}.`;
+        boton.disabled = false;
+      }
+    };
+
+    campoUsuario.addEventListener('input', actualizarContador);
+
+    formulario.addEventListener('submit', (evento) => {
+      evento.preventDefault();
+      ocultarError();
+
+      try {
+        AutenticacionService.iniciarSesion(campoUsuario.value, campoContrasena.value);
+        Mensajes.mostrar('Ingreso exitoso.', 'exito');
+        setTimeout(() => {
+          window.location.href = 'panel.html';
+        }, 600);
+      } catch (error) {
+        mostrarError(error.message);
+        campoContrasena.value = '';
+        actualizarContador();
+      }
+    });
+
+    actualizarContador();
+    temporizador = setInterval(actualizarContador, 1000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi panel | &rys Banco</title>
+  <link rel="stylesheet" href="src/css/variables.css">
+  <link rel="stylesheet" href="src/css/base.css">
+  <link rel="stylesheet" href="src/css/layout.css">
+  <link rel="stylesheet" href="src/css/auth.css">
+  <link rel="stylesheet" href="src/css/interactivo.css">
+  <link rel="stylesheet" href="src/css/responsive.css">
+  <style>
+    .panel-principal {
+      padding: 32px 16px 56px;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .panel-cabecera {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .panel-cabecera h1 {
+      margin: 0;
+      font-size: 1.6rem;
+      color: var(--azul-oscuro);
+    }
+
+    .panel-cabecera p {
+      margin: 4px 0 0;
+      color: var(--gris-texto);
+    }
+
+    .panel-acciones-cabecera {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .panel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .bloque {
+      background: var(--blanco);
+      border-radius: var(--radio-tarjeta);
+      box-shadow: 0 6px 20px rgba(31, 47, 107, 0.08);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .bloque h2 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: var(--azul-oscuro);
+    }
+
+    .tarjeta-producto {
+      background: linear-gradient(135deg, var(--azul-rey), var(--violeta));
+      color: var(--blanco);
+      border-radius: var(--radio-tarjeta);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tarjeta-producto .tipo {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .tarjeta-producto .numero {
+      font-size: 1.05rem;
+      letter-spacing: 1px;
+    }
+
+    .tarjeta-producto .saldo {
+      font-size: 1.9rem;
+      font-weight: bold;
+    }
+
+    .datos-secundarios {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+      color: var(--gris-texto);
+    }
+
+    .datos-secundarios strong {
+      color: var(--azul-oscuro);
+    }
+
+    .formulario-accion {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .formulario-accion h3 {
+      margin: 8px 0 0;
+      font-size: 0.98rem;
+      color: var(--violeta);
+    }
+
+    .formulario-accion .fila {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .formulario-accion input,
+    .formulario-accion select {
+      flex: 1 1 140px;
+      padding: 10px 12px;
+      border: 1.5px solid var(--azul-borde);
+      border-radius: var(--radio);
+      font: inherit;
+      min-width: 0;
+    }
+
+    .formulario-accion button {
+      flex: 0 0 auto;
+    }
+
+    .resumen-cuotas {
+      background: var(--violeta-claro);
+      border-radius: var(--radio);
+      padding: 12px 14px;
+      font-size: 0.92rem;
+      color: var(--azul-oscuro);
+      line-height: 1.6;
+    }
+
+    .tabla-movimientos {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .tabla-movimientos th,
+    .tabla-movimientos td {
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--azul-claro);
+      text-align: left;
+    }
+
+    .tabla-movimientos th {
+      color: var(--azul-oscuro);
+      font-size: 0.85rem;
+    }
+
+    .tabla-movimientos td.valor {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .positivo { color: var(--exito); font-weight: bold; }
+    .negativo { color: var(--error); font-weight: bold; }
+
+    .contenedor-tabla {
+      overflow-x: auto;
+    }
+
+    .vacio {
+      color: var(--gris-texto);
+      font-size: 0.92rem;
+    }
+
+    .btn-sm {
+      padding: 9px 16px;
+      font-size: 0.92rem;
+    }
+
+    .btn-enlace {
+      display: inline-block;
+      padding: 9px 16px;
+      border-radius: var(--radio);
+      border: 2px solid var(--violeta);
+      color: var(--violeta);
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    @media (max-width: 900px) {
+      .panel-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .bloque {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="encabezado">
+    <div class="encabezado-contenido contenedor">
+      <a href="index.html" class="logo">
+        <img src="src/assets/img/logo.jpg" alt="&rys Banco" class="logo-img">
+      </a>
+      <button class="menu-hamburguesa" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="menu-navegacion">
+        <a href="panel.html" class="activo">Mi panel</a>
+        <a href="perfil.html">Mi perfil</a>
+        <a href="#" id="enlace-salir">Cerrar sesión</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="panel-principal">
+
+    <section class="panel-cabecera">
+      <div>
+        <h1 id="saludo">Hola</h1>
+        <p id="subtitulo">Revisa tus productos y tus movimientos.</p>
+      </div>
+    </section>
+
+    <p id="mensaje-panel" class="mensaje-error" role="alert" hidden></p>
+
+    <section class="bloque">
+      <label for="selector-producto"><strong>Producto</strong></label>
+      <select id="selector-producto"></select>
+    </section>
+
+    <section class="bloque">
+      <h2>Abrir otro producto</h2>
+      <form id="form-abrir" class="formulario-accion">
+        <div class="fila">
+          <select id="tipo-nuevo" name="tipoProducto">
+            <option value="ahorros">Cuenta de ahorros</option>
+            <option value="corriente">Cuenta corriente</option>
+            <option value="tarjeta">Tarjeta de crédito</option>
+          </select>
+          <button type="submit" class="btn btn-primario btn-sm">Abrir producto</button>
+        </div>
+        <p class="vacio">Puedes tener un producto de cada tipo. Los tipos que ya tienes aparecen deshabilitados.</p>
+      </form>
+    </section>
+
+    <section class="panel-grid">
+
+      <article class="bloque">
+        <h2>Resumen del producto</h2>
+        <div class="tarjeta-producto">
+          <span class="tipo" id="tipo-producto"></span>
+          <span class="numero" id="numero-producto"></span>
+          <span class="saldo" id="saldo-producto"></span>
+          <button type="button" id="boton-ver-numero" class="btn-enlace btn-sm" style="align-self:flex-start;cursor:pointer;background:transparent;color:var(--blanco);border-color:var(--blanco)">Ver número completo</button>
+          <button type="button" id="boton-ocultar-monto" class="btn-enlace btn-sm" style="align-self:flex-start;cursor:pointer;background:transparent;color:var(--blanco);border-color:var(--blanco)">Ocultar monto</button>
+        </div>
+        <div class="datos-secundarios" id="datos-secundarios"></div>
+      </article>
+
+      <article class="bloque">
+        <h2>Operaciones</h2>
+
+        <form id="form-consignar" class="formulario-accion">
+          <h3 id="titulo-consignar">Consignar</h3>
+          <div class="fila">
+            <input type="number" name="monto" min="1" step="any" placeholder="Monto" required>
+            <button type="submit" id="boton-consignar" class="btn btn-primario btn-sm">Consignar</button>
+          </div>
+        </form>
+
+        <form id="form-retirar" class="formulario-accion">
+          <h3>Retirar</h3>
+          <div class="fila">
+            <input type="number" name="monto" min="1" step="any" placeholder="Monto" required>
+            <button type="submit" class="btn btn-primario btn-sm">Solicitar código</button>
+          </div>
+        </form>
+
+        <form id="form-codigo" class="formulario-accion" hidden>
+          <h3>Confirma tu retiro</h3>
+          <p id="aviso-codigo" class="resumen-cuotas"></p>
+          <div class="fila">
+            <input type="text" name="codigo" inputmode="numeric" maxlength="6" placeholder="Código de 6 dígitos" autocomplete="one-time-code" required>
+            <button type="submit" class="btn btn-primario btn-sm">Confirmar retiro</button>
+            <button type="button" id="boton-cancelar-codigo" class="btn btn-secundario btn-sm">Cancelar</button>
+          </div>
+        </form>
+
+        <form id="form-transferir" class="formulario-accion">
+          <h3>Transferir</h3>
+          <div class="fila">
+            <select id="destino-propio" aria-label="Mis productos como destino"></select>
+            <input type="text" name="destino" placeholder="Número de producto destino" required>
+            <input type="number" name="monto" min="1" step="any" placeholder="Monto" required>
+            <button type="submit" class="btn btn-primario btn-sm">Transferir</button>
+          </div>
+        </form>
+
+        <form id="form-cuotas" class="formulario-accion" hidden>
+          <h3>Compra a cuotas</h3>
+          <div class="fila">
+            <input type="text" name="descripcion" placeholder="Descripción (ej. Celular)">
+            <input type="number" name="monto" min="1" step="any" placeholder="Valor de la compra" required>
+            <select name="cuotas">
+              <option value="1">1 cuota</option>
+              <option value="2">2 cuotas</option>
+              <option value="3">3 cuotas</option>
+              <option value="6">6 cuotas</option>
+              <option value="7">7 cuotas</option>
+              <option value="12">12 cuotas</option>
+              <option value="24">24 cuotas</option>
+              <option value="36">36 cuotas</option>
+            </select>
+            <button type="submit" class="btn btn-primario btn-sm">Comprar</button>
+          </div>
+          <div id="resumen-cuotas" class="resumen-cuotas" hidden></div>
+        </form>
+
+      </article>
+    </section>
+
+    <p id="mensaje-servicios" class="mensaje-error" role="alert" hidden></p>
+
+    <section class="panel-grid">
+
+      <article class="bloque">
+        <h2>Pagar facturas</h2>
+        <form id="form-factura" class="formulario-accion">
+          <div class="fila">
+            <input type="text" name="referencia" placeholder="Número de referencia" required>
+            <input type="number" name="valor" min="1" step="any" placeholder="Valor a pagar" required>
+            <button type="submit" class="btn btn-primario btn-sm">Pagar</button>
+          </div>
+        </form>
+        <p class="vacio">Se paga con el producto seleccionado arriba. En la tarjeta se registra como una compra de 1 cuota.</p>
+      </article>
+
+      <article class="bloque">
+        <h2>Comprar SOAT</h2>
+        <form id="form-soat" class="formulario-accion">
+          <div class="fila">
+            <input type="text" name="placa" placeholder="Placa (ej. ABC12D)" maxlength="6" required>
+            <select id="tipo-vehiculo" name="tipoVehiculo">
+              <option value="moto">Moto</option>
+              <option value="automovil">Automóvil</option>
+              <option value="camioneta">Camioneta</option>
+            </select>
+            <button type="submit" class="btn btn-primario btn-sm">Comprar SOAT</button>
+          </div>
+          <p id="tarifa-soat" class="vacio"></p>
+        </form>
+      </article>
+
+    </section>
+
+    <section class="bloque">
+      <h2>Movimientos</h2>
+      <div class="contenedor-tabla">
+        <table class="tabla-movimientos">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Tipo</th>
+              <th>Descripción</th>
+              <th style="text-align:right">Valor</th>
+            </tr>
+          </thead>
+          <tbody id="cuerpo-movimientos"></tbody>
+        </table>
+      </div>
+      <p id="sin-movimientos" class="vacio" hidden>Aún no tienes movimientos en este producto.</p>
+    </section>
+
+  </main>
+
+  <div class="toasts" aria-live="polite"></div>
+
+  <script type="module">
+    import { AutenticacionService } from './src/js/services/AutenticacionService.js';
+    import { TransaccionService } from './src/js/services/TransaccionService.js';
+    import { UsuarioService } from './src/js/services/UsuarioService.js';
+    import { CodigoSeguridadService } from './src/js/services/CodigoSeguridadService.js';
+    import { Cuenta } from './src/js/models/Cuenta.js';
+    import { TarjetaCredito } from './src/js/models/TarjetaCredito.js';
+    import { Mensajes } from './src/js/ui/mensajes.js';
+
+    const cliente = AutenticacionService.clienteActual();
+
+    if (!cliente) {
+      window.location.replace('login.html');
+    } else {
+      iniciar();
+    }
+
+    function iniciar() {
+      const selector = document.getElementById('selector-producto');
+      const mensajePanel = document.getElementById('mensaje-panel');
+      const formCuotas = document.getElementById('form-cuotas');
+      const resumenCuotas = document.getElementById('resumen-cuotas');
+
+      const enmascarar = (numero) => `${numero.slice(0, 4)} •••• •••• ${numero.slice(-4)}`;
+      const formatearNumero = (numero) => numero.replace(/(.{4})(?=.)/g, '$1 ');
+
+      let mostrarNumero = false;
+      let mostrarMonto = true;
+
+      const monto = (valor) => (mostrarMonto ? Cuenta.formatear(valor) : '••••••');
+
+      const mostrarError = (texto) => {
+        mensajePanel.textContent = texto;
+        mensajePanel.hidden = false;
+      };
+
+      const ocultarError = () => {
+        mensajePanel.hidden = true;
+      };
+
+      const cuentaSeleccionada = () => {
+        const numero = selector.value;
+        return cliente.buscarCuenta(numero);
+      };
+
+      const formatoFecha = (fecha) =>
+        new Intl.DateTimeFormat('es-CO', { dateStyle: 'medium', timeStyle: 'short' }).format(fecha);
+
+      const pintarMovimientos = (cuenta) => {
+        const cuerpo = document.getElementById('cuerpo-movimientos');
+        const vacio = document.getElementById('sin-movimientos');
+        const movimientos = TransaccionService.historial(cliente, cuenta.numero);
+
+        cuerpo.innerHTML = '';
+        vacio.hidden = movimientos.length > 0;
+
+        movimientos.forEach((movimiento) => {
+          const fila = document.createElement('tr');
+          const esEntrada = ['Consignación', 'Interés', 'Pago de tarjeta'].includes(movimiento.tipo)
+            || (movimiento.tipo === 'Transferencia' && movimiento.descripcion.startsWith('Transferencia de'));
+          const clase = esEntrada ? 'positivo' : 'negativo';
+          const signo = esEntrada ? '+' : '−';
+
+          fila.innerHTML = `
+            <td>${formatoFecha(movimiento.fecha)}</td>
+            <td>${movimiento.tipo}</td>
+            <td>${movimiento.descripcion}</td>
+            <td class="valor ${clase}">${signo} ${monto(movimiento.valor)}</td>
+          `;
+          cuerpo.appendChild(fila);
+        });
+      };
+
+      const pintarResumen = (cuenta) => {
+        document.getElementById('tipo-producto').textContent = cuenta.tipo;
+        document.getElementById('numero-producto').textContent = mostrarNumero
+          ? formatearNumero(cuenta.numero)
+          : enmascarar(cuenta.numero);
+        document.getElementById('boton-ver-numero').textContent = mostrarNumero
+          ? 'Ocultar número'
+          : 'Ver número completo';
+
+        const datos = document.getElementById('datos-secundarios');
+        const esTarjeta = cuenta instanceof TarjetaCredito;
+
+        document.getElementById('saldo-producto').textContent = esTarjeta
+          ? `Cupo: ${monto(cuenta.cupoDisponible)}`
+          : monto(cuenta.saldo);
+
+        datos.innerHTML = esTarjeta
+          ? `<span>Cupo total: <strong>${monto(cuenta.cupoTotal)}</strong></span>
+             <span>Deuda: <strong>${monto(cuenta.deuda)}</strong></span>`
+          : `<span>Saldo disponible para retiro: <strong>${monto(cuenta.calcularLimiteRetiro())}</strong></span>`;
+
+        document.getElementById('titulo-consignar').textContent = esTarjeta
+          ? 'Consignar (abona a la deuda)'
+          : 'Consignar';
+        document.getElementById('boton-ocultar-monto').textContent = mostrarMonto
+          ? 'Ocultar monto'
+          : 'Mostrar monto';
+
+        formCuotas.hidden = !esTarjeta;
+        resumenCuotas.hidden = true;
+        document.querySelector('#form-retirar').hidden = false;
+        document.getElementById('form-codigo').hidden = true;
+      };
+
+      const selectorDestino = document.getElementById('destino-propio');
+      const inputDestino = document.querySelector('#form-transferir input[name="destino"]');
+
+      /** Llena el menú con tus otros productos, excepto el de origen. */
+      const llenarDestinosPropios = (cuentaOrigen) => {
+        selectorDestino.innerHTML = '';
+
+        const opcionVacia = document.createElement('option');
+        opcionVacia.value = '';
+        opcionVacia.textContent = 'Mis productos…';
+        selectorDestino.appendChild(opcionVacia);
+
+        cliente.cuentas
+          .filter((cuenta) => cuenta.numero !== cuentaOrigen.numero)
+          .forEach((cuenta) => {
+            const opcion = document.createElement('option');
+            opcion.value = cuenta.numero;
+            opcion.textContent = `${cuenta.tipo} · ${enmascarar(cuenta.numero)}`;
+            selectorDestino.appendChild(opcion);
+          });
+
+        inputDestino.value = '';
+      };
+
+      selectorDestino.addEventListener('change', () => {
+        if (selectorDestino.value) {
+          inputDestino.value = selectorDestino.value;
+        }
+      });
+
+      const refrescar = () => {
+        const cuenta = cuentaSeleccionada();
+        pintarResumen(cuenta);
+        pintarMovimientos(cuenta);
+        llenarDestinosPropios(cuenta);
+      };
+
+      const nombresTipo = {
+        ahorros: 'Cuenta de ahorros',
+        corriente: 'Cuenta corriente',
+        tarjeta: 'Tarjeta de crédito'
+      };
+
+      const actualizarOpcionesProducto = () => {
+        const tiposTenidos = cliente.cuentas.map((cuenta) => cuenta.tipo);
+        document.querySelectorAll('#tipo-nuevo option').forEach((opcion) => {
+          opcion.disabled = tiposTenidos.includes(nombresTipo[opcion.value]);
+        });
+      };
+
+      const llenarSelector = () => {
+        selector.innerHTML = '';
+        cliente.cuentas.forEach((cuenta) => {
+          const opcion = document.createElement('option');
+          opcion.value = cuenta.numero;
+          opcion.textContent = `${cuenta.tipo} · ${enmascarar(cuenta.numero)}`;
+          selector.appendChild(opcion);
+        });
+      };
+
+      const ejecutar = (operacion, mensajeOk) => {
+        ocultarError();
+        try {
+          operacion();
+          refrescar();
+          Mensajes.mostrar(mensajeOk, 'exito');
+        } catch (error) {
+          mostrarError(error.message);
+        }
+      };
+
+      const leerMonto = (formulario) => Number(new FormData(formulario).get('monto'));
+
+      document.getElementById('form-consignar').addEventListener('submit', (evento) => {
+        evento.preventDefault();
+        const formulario = evento.currentTarget;
+        ejecutar(() => {
+          TransaccionService.consignar(cliente, selector.value, leerMonto(formulario));
+        }, 'Consignación realizada.');
+        formulario.reset();
+      });
+
+      const formRetirar = document.getElementById('form-retirar');
+      const formCodigo = document.getElementById('form-codigo');
+      const avisoCodigo = document.getElementById('aviso-codigo');
+
+      const volverARetiro = () => {
+        formCodigo.hidden = true;
+        formCodigo.reset();
+        formRetirar.hidden = false;
+      };
+
+      formRetirar.addEventListener('submit', (evento) => {
+        evento.preventDefault();
+        ocultarError();
+
+        try {
+          const cuenta = cuentaSeleccionada();
+          const monto = leerMonto(formRetirar);
+
+          if (cuenta instanceof TarjetaCredito) {
+            throw new Error('La tarjeta de crédito no permite retiros en efectivo.');
+          }
+
+          Cuenta.validarMonto(monto);
+
+          const limite = cuenta.calcularLimiteRetiro();
+          if (monto > limite) {
+            throw new Error(`Saldo insuficiente. El límite de retiro es ${Cuenta.formatear(limite)}.`);
+          }
+
+          const codigo = CodigoSeguridadService.solicitar(cliente.usuario, 'retiro', {
+            numeroCuenta: cuenta.numero,
+            monto
+          });
+
+          avisoCodigo.innerHTML = `Enviamos un código de un solo uso a tu celular terminado en
+            <strong>${String(cliente.celular ?? '').slice(-4)}</strong> para retirar
+            <strong>${Cuenta.formatear(monto)}</strong>. Vence en ${CodigoSeguridadService.TIEMPO_MINUTOS} minutos.
+            <br><small>Simulación: en el banco real llegaría por SMS. Código de prueba: <strong>${codigo}</strong></small>`;
+
+          formRetirar.hidden = true;
+          formCodigo.hidden = false;
+          formRetirar.reset();
+        } catch (error) {
+          mostrarError(error.message);
+        }
+      });
+
+      formCodigo.addEventListener('submit', (evento) => {
+        evento.preventDefault();
+        ocultarError();
+
+        try {
+          const datos = CodigoSeguridadService.validar(
+            cliente.usuario,
+            'retiro',
+            new FormData(formCodigo).get('codigo')
+          );
+
+          TransaccionService.retirar(cliente, datos.numeroCuenta, datos.monto);
+
+          volverARetiro();
+          refrescar();
+          Mensajes.mostrar('Retiro realizado.', 'exito');
+        } catch (error) {
+          mostrarError(error.message);
+        }
+      });
+
+      document.getElementById('boton-cancelar-codigo').addEventListener('click', () => {
+        CodigoSeguridadService.cancelar(cliente.usuario);
+        volverARetiro();
+        ocultarError();
+      });
+
+      document.getElementById('form-transferir').addEventListener('submit', (evento) => {
+        evento.preventDefault();
+        const formulario = evento.currentTarget;
+        const datos = new FormData(formulario);
+        ejecutar(() => {
+          TransaccionService.transferir(cliente, selector.value, datos.get('destino').trim(), Number(datos.get('monto')));
+        }, 'Transferencia realizada.');
+        formulario.reset();
+      });
+
+      formCuotas.addEventListener('submit', (evento) => {
+        evento.preventDefault();
+        const datos = new FormData(formCuotas);
+        ejecutar(() => {
+          const resumen = TransaccionService.comprarACuotas(
+            cliente,
+            selector.value,
+            Number(datos.get('monto')),
+            Number(datos.get('cuotas')),
+            datos.get('descripcion').trim() || 'Compra'
+          );
+          resumenCuotas.hidden = false;
+          resumenCuotas.innerHTML = `
+            Cuota mensual: <strong>${Cuenta.formatear(resumen.cuotaMensual)}</strong><br>
+            Tasa mensual: <strong>${(resumen.tasa * 100).toFixed(1)} %</strong><br>
+            Total a pagar: <strong>${Cuenta.formatear(resumen.totalPagar)}</strong>
+          `;
+        }, 'Compra registrada.');
+        formCuotas.reset();
+      });
+
+      const selectorVehiculo = document.getElementById('tipo-vehiculo');
+      const pintarTarifa = () => {
+        const valor = TransaccionService.TARIFAS_SOAT[selectorVehiculo.value];
+        document.getElementById('tarifa-soat').textContent = `Valor: ${Cuenta.formatear(valor)} (simulación)`;
+      };
+
+      selectorVehiculo.addEventListener('change', pintarTarifa);
+      pintarTarifa();
+
+      const mensajeServicios = document.getElementById('mensaje-servicios');
+
+      const ejecutarServicio = (operacion, mensajeOk) => {
+        mensajeServicios.hidden = true;
+        try {
+          operacion();
+          refrescar();
+          Mensajes.mostrar(mensajeOk, 'exito');
+          return true;
+        } catch (error) {
+          mensajeServicios.textContent = error.message;
+          mensajeServicios.hidden = false;
+          return false;
+        }
+      };
+
+      document.getElementById('form-factura').addEventListener('submit', (evento) => {
+        evento.preventDefault();
+        const formulario = evento.currentTarget;
+        const datos = new FormData(formulario);
+
+        const ok = ejecutarServicio(() => {
+          TransaccionService.pagarFactura(
+            cliente,
+            selector.value,
+            datos.get('referencia').trim(),
+            Number(datos.get('valor'))
+          );
+        }, 'Factura pagada.');
+
+        if (ok) {
+          formulario.reset();
+        }
+      });
+
+      document.getElementById('form-soat').addEventListener('submit', (evento) => {
+        evento.preventDefault();
+        const formulario = evento.currentTarget;
+        const datos = new FormData(formulario);
+
+        const ok = ejecutarServicio(() => {
+          TransaccionService.comprarSoat(
+            cliente,
+            selector.value,
+            datos.get('placa'),
+            datos.get('tipoVehiculo')
+          );
+        }, 'SOAT comprado.');
+
+        if (ok) {
+          formulario.reset();
+          pintarTarifa();
+        }
+      });
+
+      document.getElementById('form-abrir').addEventListener('submit', (evento) => {
+        evento.preventDefault();
+        ocultarError();
+
+        const tipo = new FormData(evento.currentTarget).get('tipoProducto');
+
+        try {
+          const producto = UsuarioService.abrirProducto(cliente.usuario, tipo);
+          llenarSelector();
+          actualizarOpcionesProducto();
+          selector.value = producto.numero;
+          refrescar();
+          Mensajes.mostrar('Producto abierto.', 'exito');
+        } catch (error) {
+          mostrarError(error.message);
+        }
+      });
+
+      selector.addEventListener('change', () => {
+        ocultarError();
+        refrescar();
+      });
+
+      document.getElementById('boton-ver-numero').addEventListener('click', () => {
+        mostrarNumero = !mostrarNumero;
+        refrescar();
+      });
+
+      document.getElementById('boton-ocultar-monto').addEventListener('click', () => {
+        mostrarMonto = !mostrarMonto;
+        refrescar();
+      });
+
+      const salir = (evento) => {
+        evento.preventDefault();
+        AutenticacionService.cerrarSesion();
+        window.location.href = 'login.html';
+      };
+
+      document.getElementById('enlace-salir').addEventListener('click', salir);
+
+      document.getElementById('saludo').textContent = `Hola, ${cliente.nombres}`;
+
+      llenarSelector();
+      actualizarOpcionesProducto();
+      refrescar();
+    }
+  </script>
+</body>
+</html>

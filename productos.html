@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos &amp;rys Banco</title>
+  <link rel="stylesheet" href="src/css/variables.css">
+  <link rel="stylesheet" href="src/css/base.css">
+  <link rel="stylesheet" href="src/css/layout.css">
+  <link rel="stylesheet" href="src/css/landing.css">
+  <link rel="stylesheet" href="src/css/responsive.css">
+</head>
+<body>
+
+  <header class="encabezado">
+    <div class="encabezado-contenido">
+      <a href="index.html" class="logo"><img src="src/assets/Img/logo.jpg" alt="&amp;rys Banco" class="logo-img"></a>
+
+      <button class="menu-hamburguesa" aria-label="Abrir menú">&#9776;</button>
+
+      <nav>
+        <ul class="menu-navegacion">
+          <li><a href="registro.html">Crear cuenta</a></li>
+          <li><a href="login.html" class="btn btn-secundario">Iniciar sesión</a></li>
+          <li><a href="index.html">Inicio</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="contenedor">
+
+    <section id="ahorros" class="promocion-detalle producto-solo">
+      <div>
+        <span class="etiqueta-simulacion">Simulación académica</span>
+        <h2>Cuenta de ahorros</h2>
+        <p>Producto diseñado para el ahorro seguro, con generación de rendimientos.</p>
+
+        <h3>Qué puedes hacer</h3>
+        <ul>
+          <li>Consignar y retirar dinero.</li>
+          <li>Guardar dinero a mediano y largo plazo.</li>
+          <li>El monto a retirar no puede superar el saldo disponible.</li>
+        </ul>
+
+        <h3>Intereses</h3>
+        <p>Tasa mensual del 1.5%, calculada y aplicada en el momento del retiro.</p>
+
+        <a href="registro.html" class="btn btn-primario">Crear cuenta</a>
+      </div>
+    </section>
+
+    <section id="corriente" class="promocion-detalle producto-solo">
+      <div>
+        <span class="etiqueta-simulacion">Simulación académica</span>
+        <h2>Cuenta corriente</h2>
+        <p>Producto orientado a la gestión diaria del dinero, con mayor flexibilidad.</p>
+
+        <h3>Qué puedes hacer</h3>
+        <ul>
+          <li>Recibir nómina, pagar facturas y realizar transferencias frecuentes.</li>
+          <li>Sobregiro permitido: puedes retirar hasta un 20% adicional sobre tu saldo actual.</li>
+        </ul>
+
+        <h3>Intereses</h3>
+        <p>No genera intereses.</p>
+
+        <h3>Ejemplo</h3>
+        <p>Con un saldo de $1.000.000, el límite de retiro es $1.200.000.</p>
+
+        <a href="registro.html" class="btn btn-primario">Crear cuenta</a>
+      </div>
+    </section>
+
+    <section id="tarjeta" class="promocion-detalle producto-solo">
+      <div>
+        <span class="etiqueta-simulacion">Simulación académica</span>
+        <h2>Tarjeta de crédito</h2>
+        <p>Medio de pago que permite financiar compras a cuotas, con cargo de intereses según el plazo elegido.</p>
+
+        <h3>Cómo funciona</h3>
+        <ul>
+          <li>El banco asigna un cupo de crédito.</li>
+          <li>Cada compra genera una deuda a pagar.</li>
+          <li>Cada transacción muestra el valor del pago mensual resultante.</li>
+        </ul>
+
+        <h3>Tasas de interés</h3>
+        <table class="tabla-tasas">
+          <thead>
+            <tr>
+              <th>Número de cuotas</th>
+              <th>Tasa de interés mensual</th>
+              <th>Observación</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>≤ 2 cuotas</td>
+              <td>0%</td>
+              <td>Sin interés</td>
+            </tr>
+            <tr>
+              <td>3 – 6 cuotas</td>
+              <td>1.9% mensual</td>
+              <td>Interés moderado</td>
+            </tr>
+            <tr>
+              <td>≥ 7 cuotas</td>
+              <td>2.3% mensual</td>
+              <td>Interés alto</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>Fórmula de la cuota mensual</h3>
+        <p>Cuota mensual = (Capital × tasa) / (1 − (1 + tasa)^(−n))</p>
+        <p>Donde la tasa es la tasa mensual en decimal y n es el número de cuotas.</p>
+
+        <a href="registro.html" class="btn btn-primario">Crear cuenta</a>
+      </div>
+    </section>
+
+    <a href="index.html" class="btn btn-secundario volver">Volver al inicio</a>
+
+  </main>
+
+  <footer class="pie-pagina">
+    <div class="pie-contenido">
+      <div>
+        <h4>Términos</h4>
+        <a href="#">Términos y condiciones</a>
+        <a href="#">PQR</a>
+      </div>
+
+      <div>
+        <h4>Redes sociales</h4>
+        <a href="#">Facebook: srysbanco@hotmail.com</a>
+        <a href="#">Instagram: @srys_banco</a>
+      </div>
+
+      <div>
+        <h4>Ubicaciones</h4>
+        <p>Medellín, Bogotá, Cali</p>
+      </div>
+
+      <div>
+        <h4>Atención</h4>
+        <p>Tel. 054 500 3000</p>
+        <p>324 3200</p>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="src/js/main.js"></script>
+</body>
+</html>

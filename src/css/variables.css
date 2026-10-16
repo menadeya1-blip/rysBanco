@@ -1,0 +1,21 @@
+:root {
+  --azul-rey: #4169E1;
+  --azul-oscuro: #1F2F6B;
+  --azul-claro: #EEF2FD;
+  --azul-borde: #C9D5F7;
+
+  --violeta: #7F00FF;
+  --violeta-medio: #B38CFF;
+  --violeta-claro: #E3D6FF;
+
+  --blanco: #FFFFFF;
+  --gris-texto: #5F5E5A;
+
+  --exito: #2E7D32;
+  --error: #C62828;
+  --advertencia: #F9A825;
+
+  --radio: 10px;
+  --radio-tarjeta: 14px;
+  --fuente: Arial, Helvetica, sans-serif;
+}

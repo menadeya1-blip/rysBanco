@@ -1,0 +1,139 @@
+/* ==========================================================
+   interactivo.css — validación, medidor, notificaciones y animaciones
+   ========================================================== */
+
+/* ---------- Campos y validación ---------- */
+.campo {
+  position: relative;
+}
+
+.boton-ojo {
+  position: absolute;
+  right: 10px;
+  top: 34px;
+  padding: 4px 6px;
+  border: none;
+  background: transparent;
+  color: var(--azul-rey);
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.campo-valido input,
+.campo-valido select {
+  border-color: var(--exito);
+}
+
+.campo-invalido input,
+.campo-invalido select {
+  border-color: var(--error);
+}
+
+.mensaje-campo {
+  margin: 0;
+  font-size: 0.8rem;
+}
+
+.campo-valido .mensaje-campo {
+  color: var(--exito);
+}
+
+.campo-invalido .mensaje-campo {
+  color: var(--error);
+}
+
+/* ---------- Medidor de seguridad de contraseña ---------- */
+.medidor {
+  height: 6px;
+  margin-top: 2px;
+  background: var(--azul-claro);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.medidor span {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: 999px;
+  transition: width 0.3s ease, background 0.3s ease;
+}
+
+/* ---------- Notificaciones (toasts) ---------- */
+.toasts {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: min(360px, calc(100vw - 32px));
+}
+
+.toast {
+  padding: 12px 16px;
+  border-radius: var(--radio);
+  background: var(--azul-oscuro);
+  color: var(--blanco);
+  font-size: 0.92rem;
+  font-weight: bold;
+  line-height: 1.4;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+  animation: entrarToast 0.3s ease;
+}
+
+/* Tipos: funciona con clase "toast exito" o "toast-exito" */
+.toast.exito,
+.toast-exito,
+.toast--exito {
+  background: var(--exito);
+}
+
+.toast.error,
+.toast-error,
+.toast--error {
+  background: var(--error);
+}
+
+.toast.advertencia,
+.toast-advertencia,
+.toast--advertencia {
+  background: var(--advertencia);
+  color: #222;
+}
+
+@keyframes entrarToast {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Animación de aparición (landing) ---------- */
+.revelar {
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.revelar.oculto {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* ---------- Accesibilidad: sin animaciones si el usuario lo pide ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .revelar,
+  .revelar.oculto {
+    transition: none;
+    transform: none;
+    opacity: 1;
+  }
+
+  .toast {
+    animation: none;
+  }
+}

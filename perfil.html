@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi perfil | &rys Banco</title>
+  <link rel="stylesheet" href="src/css/variables.css">
+  <link rel="stylesheet" href="src/css/base.css">
+  <link rel="stylesheet" href="src/css/layout.css">
+  <link rel="stylesheet" href="src/css/auth.css">
+  <link rel="stylesheet" href="src/css/interactivo.css">
+  <link rel="stylesheet" href="src/css/responsive.css">
+  <style>
+    .perfil-principal {
+      padding: 32px 16px 56px;
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .perfil-principal h1 {
+      margin: 0;
+      font-size: 1.6rem;
+      color: var(--azul-oscuro);
+    }
+
+    .perfil-principal > p {
+      margin: 4px 0 0;
+      color: var(--gris-texto);
+    }
+
+    .bloque-perfil {
+      background: var(--blanco);
+      border-radius: var(--radio-tarjeta);
+      box-shadow: 0 6px 20px rgba(31, 47, 107, 0.08);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .bloque-perfil h2 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: var(--azul-oscuro);
+    }
+
+    .bloque-perfil .campo input[readonly] {
+      background: var(--azul-claro);
+      color: var(--gris-texto);
+    }
+
+    .acciones-perfil {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .acciones-perfil .btn {
+      flex: 0 0 auto;
+    }
+
+    @media (max-width: 600px) {
+      .bloque-perfil {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="encabezado">
+    <div class="encabezado-contenido contenedor">
+      <a href="index.html" class="logo">
+        <img src="src/assets/img/logo.jpg" alt="&rys Banco" class="logo-img">
+      </a>
+      <button class="menu-hamburguesa" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="menu-navegacion">
+        <a href="panel.html">Mi panel</a>
+        <a href="perfil.html" class="activo">Mi perfil</a>
+        <a href="#" id="enlace-salir">Cerrar sesión</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="perfil-principal">
+
+    <section>
+      <h1>Mi perfil</h1>
+      <p>Actualiza tus datos de contacto o cambia tu contraseña.</p>
+    </section>
+
+    <p id="mensaje-perfil" class="mensaje-error" role="alert" hidden></p>
+    <p id="mensaje-exito-perfil" class="mensaje-exito" role="status" hidden></p>
+
+    <!-- Datos personales -->
+    <form id="form-datos" class="bloque-perfil" novalidate>
+      <h2>Datos personales</h2>
+
+      <div class="fila-campos">
+        <div class="campo">
+          <label for="nombres">Nombres</label>
+          <input type="text" id="nombres" name="nombres" required>
+        </div>
+        <div class="campo">
+          <label for="apellidos">Apellidos</label>
+          <input type="text" id="apellidos" name="apellidos" required>
+        </div>
+      </div>
+
+      <div class="fila-campos">
+        <div class="campo">
+          <label for="tipo-documento">Tipo de documento</label>
+          <input type="text" id="tipo-documento" readonly>
+        </div>
+        <div class="campo">
+          <label for="numero-documento">Número de documento</label>
+          <input type="text" id="numero-documento" readonly>
+          <small class="ayuda-campo">El documento no se puede cambiar.</small>
+        </div>
+      </div>
+
+      <div class="fila-campos">
+        <div class="campo">
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" name="correo" required>
+        </div>
+        <div class="campo">
+          <label for="celular">Celular</label>
+          <input type="tel" id="celular" name="celular" inputmode="numeric" maxlength="10" required>
+          <small class="ayuda-campo">10 dígitos, empieza por 3.</small>
+        </div>
+      </div>
+
+      <div class="acciones-perfil">
+        <button type="submit" class="btn btn-primario">Guardar datos</button>
+      </div>
+    </form>
+
+    <!-- Cambio de contraseña -->
+    <form id="form-clave" class="bloque-perfil" novalidate>
+      <h2>Cambiar contraseña</h2>
+
+      <div class="campo">
+        <label for="usuario-clave">Usuario</label>
+        <input type="text" id="usuario-clave" name="usuario" autocomplete="username" required>
+        <small class="ayuda-campo">Escribe tu usuario para confirmar tu identidad.</small>
+      </div>
+
+      <div class="campo">
+        <label for="clave-actual">Contraseña actual</label>
+        <input type="password" id="clave-actual" name="claveActual" autocomplete="current-password" required>
+      </div>
+
+      <div class="fila-campos">
+        <div class="campo">
+          <label for="clave-nueva">Contraseña nueva</label>
+          <input type="password" id="clave-nueva" name="claveNueva" autocomplete="new-password" required>
+          <div class="medidor"><span id="barra-medidor"></span></div>
+          <small id="texto-medidor" class="ayuda-campo">Mínimo 8 caracteres.</small>
+        </div>
+        <div class="campo">
+          <label for="clave-confirmacion">Confirmar contraseña nueva</label>
+          <input type="password" id="clave-confirmacion" name="confirmacion" autocomplete="new-password" required>
+        </div>
+      </div>
+
+      <div class="acciones-perfil">
+        <button type="submit" class="btn btn-primario">Cambiar contraseña</button>
+      </div>
+    </form>
+
+  </main>
+
+  <div class="toasts" aria-live="polite"></div>
+
+  <script type="module">
+    import { AutenticacionService } from './src/js/services/AutenticacionService.js';
+    import { UsuarioService } from './src/js/services/UsuarioService.js';
+    import { Validaciones } from './src/js/utils/validaciones.js';
+    import { Mensajes } from './src/js/ui/mensajes.js';
+
+    const cliente = AutenticacionService.clienteActual();
+
+    if (!cliente) {
+      window.location.replace('login.html');
+    } else {
+      iniciar();
+    }
+
+    function iniciar() {
+      const mensajeError = document.getElementById('mensaje-perfil');
+      const mensajeExito = document.getElementById('mensaje-exito-perfil');
+
+      const mostrarError = (texto) => {
+        mensajeExito.hidden = true;
+        mensajeError.textContent = texto;
+        mensajeError.hidden = false;
+      };
+
+      const mostrarExito = (texto) => {
+        mensajeError.hidden = true;
+        mensajeExito.textContent = texto;
+        mensajeExito.hidden = false;
+      };
+
+      const ocultarMensajes = () => {
+        mensajeError.hidden = true;
+        mensajeExito.hidden = true;
+      };
+
+      const cargarDatos = () => {
+        document.getElementById('nombres').value = cliente.nombres ?? '';
+        document.getElementById('apellidos').value = cliente.apellidos ?? '';
+        document.getElementById('tipo-documento').value = cliente.tipoDocumento ?? '';
+        document.getElementById('numero-documento').value = cliente.numeroDocumento ?? '';
+        document.getElementById('correo').value = cliente.correo ?? '';
+        document.getElementById('celular').value = cliente.celular ?? '';
+      };
+
+      // Datos personales
+      document.getElementById('form-datos').addEventListener('submit', (evento) => {
+        evento.preventDefault();
+        ocultarMensajes();
+
+        const datos = new FormData(evento.currentTarget);
+
+        try {
+          UsuarioService.editar(cliente.usuario, {
+            nombres: datos.get('nombres').trim(),
+            apellidos: datos.get('apellidos').trim(),
+            correo: datos.get('correo').trim(),
+            celular: datos.get('celular').trim()
+          });
+
+          mostrarExito('Tus datos se guardaron correctamente.');
+          Mensajes.mostrar('Datos actualizados.', 'exito');
+        } catch (error) {
+          mostrarError(error.message);
+        }
+      });
+
+      // Cambio de contraseña: usuario → clave actual → clave nueva → confirmación
+      const campoClaveNueva = document.getElementById('clave-nueva');
+      const barra = document.getElementById('barra-medidor');
+      const textoMedidor = document.getElementById('texto-medidor');
+
+      campoClaveNueva.addEventListener('input', () => {
+        const fuerza = Validaciones.fortaleza(campoClaveNueva.value);
+        barra.style.width = `${fuerza.porcentaje}%`;
+        barra.style.background = fuerza.color;
+        textoMedidor.textContent = campoClaveNueva.value ? `Seguridad: ${fuerza.texto}` : 'Mínimo 8 caracteres.';
+      });
+
+      document.getElementById('form-clave').addEventListener('submit', (evento) => {
+        evento.preventDefault();
+        ocultarMensajes();
+
+        const formulario = evento.currentTarget;
+        const datos = new FormData(formulario);
+
+        if (datos.get('usuario').trim() !== cliente.usuario) {
+          mostrarError('El usuario no coincide con tu sesión.');
+          return;
+        }
+
+        try {
+          AutenticacionService.cambiarContrasena(
+            cliente,
+            datos.get('claveActual'),
+            datos.get('claveNueva'),
+            datos.get('confirmacion')
+          );
+
+          formulario.reset();
+          barra.style.width = '0';
+          textoMedidor.textContent = 'Mínimo 8 caracteres.';
+          mostrarExito('Tu contraseña se cambió correctamente.');
+          Mensajes.mostrar('Contraseña actualizada.', 'exito');
+        } catch (error) {
+          mostrarError(error.message);
+        }
+      });
+
+      const salir = (evento) => {
+        evento.preventDefault();
+        AutenticacionService.cerrarSesion();
+        window.location.href = 'login.html';
+      };
+
+      document.getElementById('enlace-salir').addEventListener('click', salir);
+
+      cargarDatos();
+    }
+  </script>
+</body>
+</html>

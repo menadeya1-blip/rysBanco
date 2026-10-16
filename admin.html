@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acceso administrador | &rys Banco</title>
+  <link rel="stylesheet" href="src/css/variables.css">
+  <link rel="stylesheet" href="src/css/base.css">
+  <link rel="stylesheet" href="src/css/layout.css">
+  <link rel="stylesheet" href="src/css/auth.css">
+  <link rel="stylesheet" href="src/css/interactivo.css">
+  <link rel="stylesheet" href="src/css/responsive.css">
+</head>
+<body>
+
+  <header class="encabezado">
+    <div class="encabezado-contenido contenedor">
+      <a href="index.html" class="logo">
+        <img src="src/assets/img/logo.jpg" alt="&rys Banco" class="logo-img">
+      </a>
+      <button class="menu-hamburguesa" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="menu-navegacion">
+        <a href="index.html">Inicio</a>
+        <a href="login.html">Ingreso de clientes</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="auth-principal">
+    <section class="auth-tarjeta">
+      <div class="auth-franja">
+        <h1>Acceso administrador</h1>
+        <p>Solo personal autorizado. Gestiona los usuarios del banco.</p>
+      </div>
+
+      <form id="form-admin" class="auth-formulario" novalidate>
+
+        <div class="campo">
+          <label for="usuario">Usuario</label>
+          <input type="text" id="usuario" name="usuario" autocomplete="username" required>
+        </div>
+
+        <div class="campo">
+          <label for="contrasena">Contraseña</label>
+          <input type="password" id="contrasena" name="contrasena" autocomplete="current-password" required>
+        </div>
+
+        <p id="contador-admin" class="ayuda-campo" aria-live="polite"></p>
+        <p id="mensaje-admin" class="mensaje-error" role="alert" hidden></p>
+
+        <button type="submit" id="boton-ingresar-admin" class="btn btn-primario btn-bloque">Ingresar</button>
+      </form>
+    </section>
+  </main>
+
+  <div class="toasts" aria-live="polite"></div>
+
+  <script type="module">
+    import { AdministradorService } from './src/js/services/AdministradorService.js';
+    import { Mensajes } from './src/js/ui/mensajes.js';
+
+    if (AdministradorService.estaAutenticado()) {
+      window.location.replace('usuarios.html');
+    }
+
+    const formulario = document.getElementById('form-admin');
+    const campoUsuario = document.getElementById('usuario');
+    const campoContrasena = document.getElementById('contrasena');
+    const mensaje = document.getElementById('mensaje-admin');
+    const contador = document.getElementById('contador-admin');
+    const boton = document.getElementById('boton-ingresar-admin');
+
+    const mostrarError = (texto) => {
+      mensaje.textContent = texto;
+      mensaje.hidden = false;
+    };
+
+    const actualizarContador = () => {
+      const estado = AdministradorService.estado();
+
+      if (estado.bloqueada) {
+        const minutos = Math.floor(estado.segundosBloqueo / 60);
+        const segundos = String(estado.segundosBloqueo % 60).padStart(2, '0');
+        contador.textContent = `Acceso bloqueado. Intenta de nuevo en ${minutos}:${segundos}.`;
+        boton.disabled = true;
+      } else {
+        contador.textContent = `Intentos restantes: ${estado.intentosRestantes} de ${AdministradorService.MAX_INTENTOS}.`;
+        boton.disabled = false;
+      }
+    };
+
+    formulario.addEventListener('submit', (evento) => {
+      evento.preventDefault();
+      mensaje.hidden = true;
+
+      try {
+        AdministradorService.iniciarSesion(campoUsuario.value.trim(), campoContrasena.value);
+        Mensajes.mostrar('Acceso concedido.', 'exito');
+        setTimeout(() => {
+          window.location.href = 'usuarios.html';
+        }, 500);
+      } catch (error) {
+        mostrarError(error.message);
+        campoContrasena.value = '';
+        actualizarContador();
+      }
+    });
+
+    actualizarContador();
+    setInterval(actualizarContador, 1000);
+  </script>
+</body>
+</html>

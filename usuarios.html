@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuarios | &rys Banco</title>
+  <link rel="stylesheet" href="src/css/variables.css">
+  <link rel="stylesheet" href="src/css/base.css">
+  <link rel="stylesheet" href="src/css/layout.css">
+  <link rel="stylesheet" href="src/css/auth.css">
+  <link rel="stylesheet" href="src/css/interactivo.css">
+  <link rel="stylesheet" href="src/css/responsive.css">
+  <style>
+    .usuarios-principal {
+      padding: 32px 16px 56px;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .usuarios-principal h1 {
+      margin: 0;
+      font-size: 1.6rem;
+      color: var(--azul-oscuro);
+    }
+
+    .usuarios-principal > header p {
+      margin: 4px 0 0;
+      color: var(--gris-texto);
+    }
+
+    .bloque-usuarios {
+      background: var(--blanco);
+      border-radius: var(--radio-tarjeta);
+      box-shadow: 0 6px 20px rgba(31, 47, 107, 0.08);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .bloque-usuarios h2 {
+      margin: 0;
+      font-size: 1.1rem;
+      color: var(--azul-oscuro);
+    }
+
+    .bloque-usuarios .campo input,
+    .bloque-usuarios .campo select {
+      width: 100%;
+    }
+
+    .fila-botones {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .fila-botones .btn {
+      flex: 0 0 auto;
+    }
+
+    .contenedor-tabla {
+      overflow-x: auto;
+    }
+
+    .tabla-usuarios {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .tabla-usuarios th,
+    .tabla-usuarios td {
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--azul-claro);
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    .tabla-usuarios th {
+      color: var(--azul-oscuro);
+      font-size: 0.85rem;
+    }
+
+    .boton-accion {
+      padding: 6px 12px;
+      border-radius: var(--radio);
+      border: 2px solid var(--violeta);
+      background: transparent;
+      color: var(--violeta);
+      font: inherit;
+      font-size: 0.85rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-right: 6px;
+    }
+
+    .boton-accion.peligro {
+      border-color: var(--error);
+      color: var(--error);
+    }
+
+    .vacio {
+      color: var(--gris-texto);
+    }
+
+    dialog {
+      border: none;
+      border-radius: var(--radio-tarjeta);
+      padding: 24px;
+      max-width: min(420px, calc(100vw - 32px));
+      box-shadow: 0 16px 40px rgba(31, 47, 107, 0.25);
+    }
+
+    dialog::backdrop {
+      background: rgba(31, 47, 107, 0.45);
+    }
+
+    dialog h2 {
+      margin: 0 0 10px;
+      color: var(--azul-oscuro);
+    }
+
+    dialog p {
+      margin: 0 0 18px;
+      color: var(--gris-texto);
+      line-height: 1.5;
+    }
+
+    .fila-dialogo {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    .btn-peligro {
+      background: var(--error);
+      color: var(--blanco);
+      border: none;
+      border-radius: var(--radio);
+      padding: 10px 18px;
+      font: inherit;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    @media (max-width: 600px) {
+      .bloque-usuarios {
+        padding: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="encabezado">
+    <div class="encabezado-contenido contenedor">
+      <a href="index.html" class="logo">
+        <img src="src/assets/img/logo.jpg" alt="&rys Banco" class="logo-img">
+      </a>
+      <button class="menu-hamburguesa" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="menu-navegacion">
+        <a href="index.html">Inicio</a>
+        <a href="usuarios.html" class="activo">Usuarios</a>
+        <a href="#" id="enlace-salir-admin">Cerrar sesión</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="usuarios-principal">
+
+    <header>
+      <h1>Administración de usuarios</h1>
+      <p>Crea, edita y elimina los clientes del banco.</p>
+    </header>
+
+    <p id="mensaje-usuarios" class="mensaje-error" role="alert" hidden></p>
+
+    <!-- Crear usuario -->
+    <form id="form-agregar" class="bloque-usuarios" novalidate>
+      <h2>Agregar usuario</h2>
+
+      <div class="fila-campos">
+        <div class="campo">
+          <label for="nombres">Nombres</label>
+          <input type="text" id="nombres" name="nombres" required>
+        </div>
+        <div class="campo">
+          <label for="apellidos">Apellidos</label>
+          <input type="text" id="apellidos" name="apellidos" required>
+        </div>
+      </div>
+
+      <div class="fila-campos">
+        <div class="campo">
+          <label for="tipo-documento">Tipo de documento</label>
+          <select id="tipo-documento" name="tipoDocumento">
+            <option value="CC">Cédula de ciudadanía</option>
+            <option value="CE">Cédula de extranjería</option>
+            <option value="PA">Pasaporte</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label for="numero-documento">Número de documento</label>
+          <input type="text" id="numero-documento" name="numeroDocumento" required>
+        </div>
+      </div>
+
+      <div class="fila-campos">
+        <div class="campo">
+          <label for="correo">Correo electrónico</label>
+          <input type="email" id="correo" name="correo" required>
+        </div>
+        <div class="campo">
+          <label for="celular">Celular</label>
+          <input type="tel" id="celular" name="celular" inputmode="numeric" maxlength="10" required>
+        </div>
+      </div>
+
+      <div class="fila-campos">
+        <div class="campo">
+          <label for="usuario">Nombre de usuario</label>
+          <input type="text" id="usuario" name="usuario" required>
+        </div>
+        <div class="campo">
+          <label for="contrasena">Contraseña inicial</label>
+          <input type="password" id="contrasena" name="contrasena" autocomplete="new-password" required>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label for="producto">Producto inicial</label>
+        <select id="producto" name="producto">
+          <option value="ahorros">Cuenta de ahorros</option>
+          <option value="corriente">Cuenta corriente</option>
+          <option value="tarjeta">Tarjeta de crédito</option>
+        </select>
+      </div>
+
+      <div class="fila-botones">
+        <button type="submit" class="btn btn-primario">Agregar usuario</button>
+      </div>
+    </form>
+
+    <!-- Editar usuario (aparece al pulsar Editar) -->
+    <form id="form-editar" class="bloque-usuarios" novalidate hidden>
+      <h2>Editar usuario: <span id="editando-usuario"></span></h2>
+
+      <div class="fila-campos">
+        <div class="campo">
+          <label for="editar-nombres">Nombres</label>
+          <input type="text" id="editar-nombres" name="nombres" required>
+        </div>
+        <div class="campo">
+          <label for="editar-apellidos">Apellidos</label>
+          <input type="text" id="editar-apellidos" name="apellidos" required>
+        </div>
+      </div>
+
+      <div class="fila-campos">
+        <div class="campo">
+          <label for="editar-correo">Correo electrónico</label>
+          <input type="email" id="editar-correo" name="correo" required>
+        </div>
+        <div class="campo">
+          <label for="editar-celular">Celular</label>
+          <input type="tel" id="editar-celular" name="celular" inputmode="numeric" maxlength="10" required>
+        </div>
+      </div>
+
+      <div class="fila-botones">
+        <button type="submit" class="btn btn-primario">Guardar cambios</button>
+        <button type="button" id="boton-cancelar-edicion" class="btn btn-secundario">Cancelar</button>
+      </div>
+    </form>
+
+    <!-- Listado -->
+    <section class="bloque-usuarios">
+      <h2>Usuarios registrados</h2>
+      <div class="contenedor-tabla">
+        <table class="tabla-usuarios">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Nombre</th>
+              <th>Documento</th>
+              <th>Celular</th>
+              <th>Correo</th>
+              <th>Productos</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="cuerpo-usuarios"></tbody>
+        </table>
+      </div>
+      <p id="sin-usuarios" class="vacio" hidden>Aún no hay usuarios registrados.</p>
+    </section>
+
+  </main>
+
+  <!-- Confirmación para eliminar -->
+  <dialog id="dialogo-eliminar">
+    <h2>¿Eliminar usuario?</h2>
+    <p>
+      Se eliminará <strong id="texto-usuario-eliminar"></strong> junto con todos sus productos y movimientos.
+      Esta acción no se puede deshacer.
+    </p>
+    <div class="fila-dialogo">
+      <button type="button" id="boton-cancelar-eliminar" class="btn btn-secundario">Cancelar</button>
+      <button type="button" id="boton-confirmar-eliminar" class="btn-peligro">Sí, eliminar</button>
+    </div>
+  </dialog>
+
+  <div class="toasts" aria-live="polite"></div>
+
+  <script type="module">
+    import { UsuarioService } from './src/js/services/UsuarioService.js';
+    import { AdministradorService } from './src/js/services/AdministradorService.js';
+    import { Mensajes } from './src/js/ui/mensajes.js';
+
+    if (!AdministradorService.estaAutenticado()) {
+      window.location.replace('admin.html');
+    }
+
+    const mensajeUsuarios = document.getElementById('mensaje-usuarios');
+    const cuerpo = document.getElementById('cuerpo-usuarios');
+    const sinUsuarios = document.getElementById('sin-usuarios');
+    const formAgregar = document.getElementById('form-agregar');
+    const formEditar = document.getElementById('form-editar');
+    const dialogo = document.getElementById('dialogo-eliminar');
+
+    let usuarioEditando = null;
+    let usuarioAEliminar = null;
+
+    const mostrarError = (texto) => {
+      mensajeUsuarios.textContent = texto;
+      mensajeUsuarios.hidden = false;
+    };
+
+    const ocultarError = () => {
+      mensajeUsuarios.hidden = true;
+    };
+
+    const crearCelda = (texto) => {
+      const celda = document.createElement('td');
+      celda.textContent = texto;
+      return celda;
+    };
+
+    const crearBoton = (texto, accion, usuario, clase = '') => {
+      const boton = document.createElement('button');
+      boton.type = 'button';
+      boton.className = `boton-accion ${clase}`.trim();
+      boton.textContent = texto;
+      boton.dataset.accion = accion;
+      boton.dataset.usuario = usuario;
+      return boton;
+    };
+
+    const pintarTabla = () => {
+      const clientes = UsuarioService.listar();
+
+      cuerpo.innerHTML = '';
+      sinUsuarios.hidden = clientes.length > 0;
+
+      clientes.forEach((cliente) => {
+        const fila = document.createElement('tr');
+        const acciones = document.createElement('td');
+
+        acciones.append(
+          crearBoton('Editar', 'editar', cliente.usuario),
+          crearBoton('Eliminar', 'eliminar', cliente.usuario, 'peligro')
+        );
+
+        fila.append(
+          crearCelda(cliente.usuario),
+          crearCelda(`${cliente.nombres} ${cliente.apellidos}`),
+          crearCelda(`${cliente.tipoDocumento} ${cliente.numeroDocumento}`),
+          crearCelda(cliente.celular),
+          crearCelda(cliente.correo),
+          crearCelda(cliente.cuentas.map((cuenta) => cuenta.tipo).join(', ') || 'Ninguno'),
+          acciones
+        );
+
+        cuerpo.appendChild(fila);
+      });
+    };
+
+    const cerrarEdicion = () => {
+      usuarioEditando = null;
+      formEditar.hidden = true;
+      formEditar.reset();
+    };
+
+    const abrirEdicion = (usuario) => {
+      const cliente = UsuarioService.buscar(usuario);
+      if (!cliente) {
+        mostrarError('El usuario no existe.');
+        return;
+      }
+
+      usuarioEditando = usuario;
+      document.getElementById('editando-usuario').textContent = usuario;
+      document.getElementById('editar-nombres').value = cliente.nombres;
+      document.getElementById('editar-apellidos').value = cliente.apellidos;
+      document.getElementById('editar-correo').value = cliente.correo;
+      document.getElementById('editar-celular').value = cliente.celular;
+      formEditar.hidden = false;
+      formEditar.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+
+    formAgregar.addEventListener('submit', (evento) => {
+      evento.preventDefault();
+      ocultarError();
+
+      const datos = new FormData(formAgregar);
+
+      try {
+        const cliente = UsuarioService.registrar({
+          nombres: datos.get('nombres').trim(),
+          apellidos: datos.get('apellidos').trim(),
+          tipoDocumento: datos.get('tipoDocumento'),
+          numeroDocumento: datos.get('numeroDocumento').trim(),
+          correo: datos.get('correo').trim(),
+          celular: datos.get('celular').trim(),
+          usuario: datos.get('usuario').trim(),
+          contrasena: datos.get('contrasena'),
+          producto: datos.get('producto')
+        });
+
+        formAgregar.reset();
+        pintarTabla();
+        Mensajes.mostrar(`Usuario ${cliente.usuario} creado.`, 'exito');
+      } catch (error) {
+        mostrarError(error.message);
+      }
+    });
+
+    formEditar.addEventListener('submit', (evento) => {
+      evento.preventDefault();
+      ocultarError();
+
+      const datos = new FormData(formEditar);
+
+      try {
+        UsuarioService.editar(usuarioEditando, {
+          nombres: datos.get('nombres').trim(),
+          apellidos: datos.get('apellidos').trim(),
+          correo: datos.get('correo').trim(),
+          celular: datos.get('celular').trim()
+        });
+
+        const usuario = usuarioEditando;
+        cerrarEdicion();
+        pintarTabla();
+        Mensajes.mostrar(`Datos de ${usuario} actualizados.`, 'exito');
+      } catch (error) {
+        mostrarError(error.message);
+      }
+    });
+
+    document.getElementById('boton-cancelar-edicion').addEventListener('click', cerrarEdicion);
+
+    cuerpo.addEventListener('click', (evento) => {
+      const boton = evento.target.closest('button[data-accion]');
+      if (!boton) {
+        return;
+      }
+
+      const { accion, usuario } = boton.dataset;
+
+      if (accion === 'editar') {
+        abrirEdicion(usuario);
+      }
+
+      if (accion === 'eliminar') {
+        usuarioAEliminar = usuario;
+        document.getElementById('texto-usuario-eliminar').textContent = usuario;
+        dialogo.showModal();
+      }
+    });
+
+    document.getElementById('boton-cancelar-eliminar').addEventListener('click', () => {
+      usuarioAEliminar = null;
+      dialogo.close();
+    });
+
+    document.getElementById('boton-confirmar-eliminar').addEventListener('click', () => {
+      try {
+        const usuario = usuarioAEliminar;
+        UsuarioService.eliminar(usuario);
+
+        if (usuarioEditando === usuario) {
+          cerrarEdicion();
+        }
+
+        usuarioAEliminar = null;
+        dialogo.close();
+        pintarTabla();
+        Mensajes.mostrar(`Usuario ${usuario} eliminado.`, 'advertencia');
+      } catch (error) {
+        dialogo.close();
+        mostrarError(error.message);
+      }
+    });
+
+    document.getElementById('enlace-salir-admin').addEventListener('click', (evento) => {
+      evento.preventDefault();
+      AdministradorService.cerrarSesion();
+      window.location.href = 'admin.html';
+    });
+
+    pintarTabla();
+  </script>
+</body>
+</html>

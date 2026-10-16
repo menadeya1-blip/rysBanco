@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&amp;rys Banco</title>
+  <link rel="stylesheet" href="src/css/variables.css">
+  <link rel="stylesheet" href="src/css/base.css">
+  <link rel="stylesheet" href="src/css/layout.css">
+  <link rel="stylesheet" href="src/css/landing.css">
+  <link rel="stylesheet" href="src/css/interactivo.css">
+  <link rel="stylesheet" href="src/css/responsive.css">
+</head>
+<body>
+
+  <header class="encabezado">
+    <div class="encabezado-contenido">
+      <a href="index.html" class="logo"><img src="src/assets/Img/logo.jpg" alt="&amp;rys Banco" class="logo-img"></a>
+
+      <button class="menu-hamburguesa" aria-label="Abrir menú">&#9776;</button>
+
+      <nav>
+        <ul class="menu-navegacion">
+          <li><a href="registro.html">Crear cuenta</a></li>
+          <li><a href="login.html" class="btn btn-secundario">Iniciar sesión</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="#sobre-nosotros">Sobre nosotros</a></li>
+          <li><a href="#terminos">Términos</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="contenedor">
+
+    <section class="banner revelar">
+
+      <div class="banner-izquierda">
+        <div class="banner-imagenes">
+          <div class="imagen-tarjeta imagen-persona">
+            <img src="src/assets/img/persona.jpg" alt="Familia sonriendo">
+          </div>
+
+          <a href="promociones.html#estudios" class="imagen-tarjeta imagen-promocion imagen-enlace">
+            <img src="src/assets/img/promocion-1.jpg" alt="Estudiantes trabajando en biblioteca">
+            <p class="texto-sobre-imagen">Beneficios para estudios superiores</p>
+          </a>
+
+          <a href="promociones.html#auto" class="imagen-tarjeta imagen-promocion imagen-enlace">
+            <img src="src/assets/img/promocion-2.jpg" alt="Pareja revisando un auto">
+            <p class="texto-sobre-imagen">Buscas financiar tu auto, ten descuentos con nosotros</p>
+          </a>
+        </div>
+
+        <div class="servicios" id="servicios">
+          <h2>Lo que puedes hacer en &amp;rys</h2>
+
+          <div class="servicios-grid">
+            <article class="servicio-tarjeta">
+              <div class="servicio-imagen">
+                <img src="src/assets/img/servicio-soat.jpg" alt="Auto azul con escudo de SOAT">
+              </div>
+              <div class="servicio-texto">
+                <h3>Compra tu SOAT</h3>
+                <p>Seguro obligatorio, en línea.</p>
+                <a href="registro.html" class="btn btn-primario" data-accion-cuenta>Comprar SOAT</a>
+              </div>
+            </article>
+
+            <article class="servicio-tarjeta">
+              <div class="servicio-imagen">
+                <img src="src/assets/img/servicio-facturas.jpg" alt="Factura con botón de pagar rodeada de íconos de servicios">
+              </div>
+              <div class="servicio-texto">
+                <h3>Paga tus facturas</h3>
+                <p>Servicios públicos y más.</p>
+                <a href="registro.html" class="btn btn-primario" data-accion-cuenta>Pagar facturas</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <div class="tarjetas-imagenes">
+        <img src="src/assets/img/tarjeta-frente.jpg" alt="Frente de la tarjeta &amp;rys Banco" class="tarjeta-imagen">
+        <img src="src/assets/img/tarjeta-reverso.jpg" alt="Reverso de la tarjeta &amp;rys Banco" class="tarjeta-imagen">
+      </div>
+
+    </section>
+
+    <section class="productos revelar" id="productos">
+      <h2>Nuestros productos</h2>
+      <p class="productos-intro">Crea tu cuenta y elige el producto que necesitas. Las tasas que se muestran son de una simulación académica.</p>
+
+      <div class="productos-grid">
+        <article class="producto-tarjeta">
+          <h3>Cuenta de ahorros</h3>
+          <p><strong>Para qué sirve:</strong> guardar tu dinero a mediano y largo plazo.</p>
+          <p><strong>Ideal para:</strong> ahorrar con generación de intereses.</p>
+          <p><strong>Dato clave:</strong> tasa mensual del 1.5%, aplicada al momento del retiro.</p>
+          <a href="productos.html#ahorros" class="btn btn-secundario">Conoce más</a>
+        </article>
+
+        <article class="producto-tarjeta">
+          <h3>Cuenta corriente</h3>
+          <p><strong>Para qué sirve:</strong> gestionar tu dinero del día a día.</p>
+          <p><strong>Ideal para:</strong> recibir nómina, pagar facturas y hacer transferencias frecuentes.</p>
+          <p><strong>Dato clave:</strong> no genera intereses y permite un sobregiro de hasta 20%.</p>
+          <a href="productos.html#corriente" class="btn btn-secundario">Conoce más</a>
+        </article>
+
+        <article class="producto-tarjeta">
+          <h3>Tarjeta de crédito</h3>
+          <p><strong>Para qué sirve:</strong> financiar compras a cuotas.</p>
+          <p><strong>Ideal para:</strong> compras grandes que quieres pagar en varias cuotas.</p>
+          <p><strong>Dato clave:</strong> 0% de interés hasta 2 cuotas. Desde 3 cuotas aplica interés según el plazo.</p>
+          <a href="productos.html#tarjeta" class="btn btn-secundario">Conoce más</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="seccion-institucional revelar" id="sobre-nosotros">
+      <p class="texto-institucional">
+        En &amp;rys Banco unimos la tecnología y la calidez humana para ofrecer un espacio
+        donde cada miembro de la familia &amp;rys encuentre su lugar.
+      </p>
+
+      <aside class="bloque-beneficios">
+        <h3>Beneficios y descuentos</h3>
+        <ul>
+          <li>Descuentos en tu cuenta de ahorros</li>
+          <li>Beneficios para estudios superiores</li>
+          <li>Financiación de tu auto</li>
+          <li>Promociones para toda la familia</li>
+        </ul>
+      </aside>
+    </section>
+
+  </main>
+
+  <footer class="pie-pagina" id="terminos">
+    <div class="pie-contenido">
+      <div>
+        <h4>Términos</h4>
+        <a href="#">Términos y condiciones</a>
+        <a href="#">PQR</a>
+      </div>
+
+      <div>
+        <h4>Redes sociales</h4>
+        <div class="redes-iconos">
+          <a href="https://www.facebook.com/TU_PAGINA" target="_blank" rel="noopener" aria-label="Facebook de &amp;rys Banco">
+            <img src="src/assets/icons/facebook.png" alt="">
+          </a>
+          <a href="https://twitter.com/TU_USUARIO" target="_blank" rel="noopener" aria-label="X (Twitter) de &amp;rys Banco">
+            <img src="src/assets/icons/twitter.png" alt="">
+          </a>
+          <a href="https://wa.me/573000000000" target="_blank" rel="noopener" aria-label="WhatsApp de &amp;rys Banco">
+            <img src="src/assets/icons/whatsapp.png" alt="">
+          </a>
+          <a href="https://www.instagram.com/srys_banco/" target="_blank" rel="noopener" aria-label="Instagram de &amp;rys Banco">
+            <img src="src/assets/icons/instagram.png" alt="">
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h4>Ubicaciones</h4>
+        <p>Medellín, Bogotá, Cali</p>
+      </div>
+
+      <div>
+        <h4>Atención</h4>
+        <p>Tel. 054 500 3000</p>
+        <p>324 3200</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="src/js/main.js" type="module"></script>
+
+  <script>
+    document.querySelectorAll('[data-accion-cuenta]').forEach((boton) => {
+      boton.addEventListener('click', (evento) => {
+        evento.preventDefault();
+        const tieneCuenta = localStorage.getItem('rys_tiene_cuenta') === 'true';
+        window.location.href = tieneCuenta ? 'login.html' : 'registro.html';
+      });
+    });
+  </script>
+</body>
+</html>

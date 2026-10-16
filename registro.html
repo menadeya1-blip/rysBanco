@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crear cuenta | &rys Banco</title>
+  <link rel="stylesheet" href="src/css/variables.css">
+  <link rel="stylesheet" href="src/css/base.css">
+  <link rel="stylesheet" href="src/css/layout.css">
+  <link rel="stylesheet" href="src/css/auth.css">
+  <link rel="stylesheet" href="src/css/interactivo.css">
+  <link rel="stylesheet" href="src/css/responsive.css">
+</head>
+<body>
+
+  <header class="encabezado">
+    <div class="encabezado-contenido contenedor">
+      <a href="index.html" class="logo">
+        <img src="src/assets/img/logo.jpg" alt="&rys Banco" class="logo-img">
+      </a>
+      <button class="menu-hamburguesa" aria-label="Abrir menú" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="menu-navegacion">
+        <a href="index.html">Inicio</a>
+        <a href="login.html">Iniciar sesión</a>
+        <a href="registro.html" class="activo">Crear cuenta</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="auth-principal">
+    <section class="auth-tarjeta">
+      <div class="auth-franja">
+        <h1>Crea tu cuenta</h1>
+        <p>Abre tu producto en minutos. Tu número de producto se genera automáticamente.</p>
+      </div>
+
+      <form id="form-registro" class="auth-formulario" novalidate>
+
+        <div class="fila-campos">
+          <div class="campo">
+            <label for="nombres">Nombres</label>
+            <input type="text" id="nombres" name="nombres" autocomplete="given-name" required>
+          </div>
+          <div class="campo">
+            <label for="apellidos">Apellidos</label>
+            <input type="text" id="apellidos" name="apellidos" autocomplete="family-name" required>
+          </div>
+        </div>
+
+        <div class="fila-campos">
+          <div class="campo">
+            <label for="tipo-documento">Tipo de documento</label>
+            <select id="tipo-documento" name="tipoDocumento" required>
+              <option value="CC">Cédula de ciudadanía</option>
+              <option value="CE">Cédula de extranjería</option>
+              <option value="PA">Pasaporte</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="numero-documento">Número de documento</label>
+            <input type="text" id="numero-documento" name="numeroDocumento" required>
+            <small class="ayuda-campo">CC y CE: solo números. Pasaporte: letras y números.</small>
+          </div>
+        </div>
+
+        <div class="fila-campos">
+          <div class="campo">
+            <label for="correo">Correo electrónico</label>
+            <input type="email" id="correo" name="correo" autocomplete="email" required>
+          </div>
+          <div class="campo">
+            <label for="celular">Celular</label>
+            <input type="tel" id="celular" name="celular" inputmode="numeric" maxlength="10" required>
+            <small class="ayuda-campo">10 dígitos, empieza por 3.</small>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="usuario">Nombre de usuario</label>
+          <input type="text" id="usuario" name="usuario" autocomplete="username" required>
+          <small class="ayuda-campo">Entre 4 y 20 caracteres: letras, números, punto o guion bajo. Debe ser único.</small>
+        </div>
+
+        <div class="fila-campos">
+          <div class="campo">
+            <label for="contrasena">Contraseña</label>
+            <input type="password" id="contrasena" name="contrasena" autocomplete="new-password" required>
+            <div class="medidor"><span id="barra-medidor"></span></div>
+            <small id="texto-medidor" class="ayuda-campo"></small>
+          </div>
+          <div class="campo">
+            <label for="confirmar-contrasena">Confirmar contraseña</label>
+            <input type="password" id="confirmar-contrasena" name="confirmarContrasena" autocomplete="new-password" required>
+          </div>
+        </div>
+
+        <fieldset class="opciones-producto">
+          <legend>¿Qué producto quieres abrir?</legend>
+
+          <label class="opcion-producto">
+            <input type="radio" name="producto" value="ahorros" checked>
+            <span><strong>Cuenta de ahorros</strong><small>Interés mensual del 1,5 %.</small></span>
+          </label>
+
+          <label class="opcion-producto">
+            <input type="radio" name="producto" value="corriente">
+            <span><strong>Cuenta corriente</strong><small>Sobregiro de hasta el 20 % del saldo.</small></span>
+          </label>
+
+          <label class="opcion-producto">
+            <input type="radio" name="producto" value="tarjeta">
+            <span><strong>Tarjeta de crédito</strong><small>Cupo inicial de $5.000.000 y compras a cuotas.</small></span>
+          </label>
+        </fieldset>
+
+        <label class="aviso-legal">
+          <input type="checkbox" id="autorizacion" required>
+          Autorizo el tratamiento de mis datos personales de acuerdo con la política de privacidad de &rys Banco.
+        </label>
+
+        <p id="mensaje-formulario" class="mensaje-error" role="alert" hidden></p>
+
+        <button type="submit" class="btn btn-primario btn-bloque">Crear cuenta</button>
+
+        <p class="auth-pie">
+          ¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a>
+        </p>
+      </form>
+    </section>
+  </main>
+
+  <div class="toasts" aria-live="polite"></div>
+
+  <script type="module">
+    import { UsuarioService } from './src/js/services/UsuarioService.js';
+    import { Validaciones } from './src/js/utils/validaciones.js';
+    import { Mensajes } from './src/js/ui/mensajes.js';
+
+    const formulario = document.getElementById('form-registro');
+    const mensajeFormulario = document.getElementById('mensaje-formulario');
+    const campoContrasena = document.getElementById('contrasena');
+    const barra = document.getElementById('barra-medidor');
+    const textoMedidor = document.getElementById('texto-medidor');
+
+    const mostrarError = (texto) => {
+      mensajeFormulario.textContent = texto;
+      mensajeFormulario.hidden = false;
+    };
+
+    const ocultarError = () => {
+      mensajeFormulario.hidden = true;
+    };
+
+    campoContrasena.addEventListener('input', () => {
+      const fuerza = Validaciones.fortaleza(campoContrasena.value);
+      barra.style.width = `${fuerza.porcentaje}%`;
+      barra.style.background = fuerza.color;
+      textoMedidor.textContent = campoContrasena.value ? `Seguridad: ${fuerza.texto}` : '';
+    });
+
+    formulario.addEventListener('submit', (evento) => {
+      evento.preventDefault();
+      ocultarError();
+
+      const datos = new FormData(formulario);
+      const contrasena = datos.get('contrasena');
+
+      if (contrasena !== datos.get('confirmarContrasena')) {
+        mostrarError('Las contraseñas no coinciden.');
+        return;
+      }
+
+      if (!document.getElementById('autorizacion').checked) {
+        mostrarError('Debes aceptar la autorización de tratamiento de datos.');
+        return;
+      }
+
+      try {
+        const cliente = UsuarioService.registrar({
+          nombres: datos.get('nombres').trim(),
+          apellidos: datos.get('apellidos').trim(),
+          tipoDocumento: datos.get('tipoDocumento'),
+          numeroDocumento: datos.get('numeroDocumento').trim(),
+          correo: datos.get('correo').trim(),
+          celular: datos.get('celular').trim(),
+          usuario: datos.get('usuario').trim(),
+          contrasena,
+          producto: datos.get('producto')
+        });
+
+        localStorage.setItem('rys_tiene_cuenta', 'true');
+        Mensajes.mostrar(`Cuenta creada. Tu usuario es ${cliente.usuario}.`, 'exito');
+        setTimeout(() => {
+          window.location.href = 'login.html';
+        }, 1200);
+      } catch (error) {
+        mostrarError(error.message);
+      }
+    });
+  </script>
+</body>
+</html>
