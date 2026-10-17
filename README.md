@@ -58,25 +58,6 @@ La **maquetación** en blanco y negro está en `docs/maquetacion/png/`. Cada pan
 
 ![Página de inicio en escritorio](docs/maquetacion/png/inicio-escritorio.png)
 
-### Ingreso (login)
-
-![Login en escritorio](docs/maquetacion/png/maquetacion-login-escritorio.png)
-
-### Panel principal
-
-![Panel principal en escritorio](docs/maquetacion/png/maquetacion-panel-principal-escritorio.png)
-
-### Perfil
-
-![Perfil en escritorio](docs/maquetacion/png/maquetacion-perfil-escritorio.png)
-
-### Administración de usuarios
-
-![Administración de usuarios en escritorio](docs/maquetacion/png/maquetacion-admin-escritorio.png)
-
-Las versiones de tableta (`-tableta.png`) y celular (`-celular.png`) de cada pantalla están en la misma carpeta.
-
----
 
 ## 🛠️ Tecnologías utilizadas
 
@@ -86,12 +67,110 @@ Las versiones de tableta (`-tableta.png`) y celular (`-celular.png`) de cada pan
 - **localStorage** para guardar los datos en el navegador, con un envoltorio `try/catch` para no fallar si el navegador lo bloquea.
 - **Visual Studio Code** + **Live Server** para ejecutar el proyecto.
 - **Git** y **GitHub** para el control de versiones.
-- **Diagrams** para el diagrama UML.
+- **Mermaid** para el diagrama UML.
 
 
 ## 🧬 Programación orientada a objetos
-El proyecto alica los 4 principios del POO,(Herencia,Polimorfismo,Encapsulamiento,Abstrabcion)
 
+El proyecto aplica los cuatro principios de la POO: abstracción, encapsulamiento, herencia y polimorfismo.
+
+### 1. Abstracción
+
+`Persona` y `Cuenta` son clases abstractas: no se pueden crear directamente. Definen lo que todas sus subclases deben hacer.
+
+```javascript
+export class Cuenta {
+  constructor(numero, saldoInicial = 0, movimientos = []) {
+    if (new.target === Cuenta) {
+      throw new Error('Cuenta es abstracta: use CuentaAhorros, CuentaCorriente o TarjetaCredito.');
+    }
+    // ...
+  }
+
+  calcularLimiteRetiro() {
+    throw new Error('Método abstracto: debe implementarlo la subclase.');
+  }
+}
+```
+
+### 2. Encapsulamiento
+
+El saldo, el número de cuenta, los movimientos y la contraseña son **campos privados** (`#`). Se leen con *getters* y se cambian solo con métodos que validan la operación.
+
+```javascript
+export class Cuenta {
+  #saldo;
+
+  get saldo() {
+    return this.#saldo;   // lectura controlada
+  }
+
+  consignar(monto, ...) {
+    Cuenta.validarMonto(monto);                          // no acepta montos negativos ni cero
+    this.#saldo = Cuenta.redondear(this.#saldo + monto); // solo esta clase puede cambiar el saldo
+    // ...
+  }
+}
+```
+
+Desde afuera, `cuenta.#saldo = 1000000000` no funciona: el navegador lo rechaza.
+
+### 3. Herencia
+
+Las clases hijas reutilizan el comportamiento de su clase padre:
+
+- `Cliente` y `Administrador` **heredan de `Persona`**: comparten usuario, contraseña y el método `cambiarContrasena()`.
+- `CuentaAhorros`, `CuentaCorriente` y `TarjetaCredito` **heredan de `Cuenta`**: reutilizan `consignar()`, `retirar()` y los movimientos.
+
+El árbol de herencia es:
+
+```
+Persona (abstracta)
+├── Cliente
+└── Administrador
+
+Cuenta (abstracta)
+├── CuentaAhorros
+├── CuentaCorriente
+└── TarjetaCredito
+```
+
+`Administrador` no hereda de `Cliente` porque no tiene cuentas bancarias.
+
+### 4. Polimorfismo
+
+La misma llamada se comporta distinto según el objeto que la recibe:
+
+```javascript
+// El mismo mensaje: calcularLimiteRetiro()
+ahorros.calcularLimiteRetiro();   // saldo disponible
+corriente.calcularLimiteRetiro(); // saldo + 20 % de sobregiro
+```
+
+Otro ejemplo: en la tarjeta, `consignar()` **abona a la deuda** en lugar de sumar saldo, y `retirar()` lanza un error porque la tarjeta no entrega efectivo:
+
+```javascript
+// TarjetaCredito sobrescribe consignar() y retirar()
+consignar(monto) {
+  // ...reduce la deuda, no suma saldo
+}
+
+retirar() {
+  throw new Error('La tarjeta de crédito no permite retiros en efectivo.');
+}
+```
+
+El panel no necesita saber qué tipo de producto es: llama `cuenta.consignar(monto)` y cada clase hace lo suyo.
+
+---
+
+## 📐 Diagrama de clases
+
+Diagrama de clases de objetos del proyecto: `Persona` y `Cuenta` como clases abstractas, con sus subclases y las relaciones entre ellas.
+
+![Diagrama de clases de objetos](docs/diagramas/diagrama-clases-objetos.png)
+
+---
 
 ## 🚀 Cómo ejecutar el proyecto
 

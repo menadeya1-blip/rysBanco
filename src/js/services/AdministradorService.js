@@ -1,18 +1,15 @@
+import { Administrador } from '../models/Administrador.js';
 import { Almacenamiento } from '../utils/almacenamiento.js';
 
 const CLAVE_SESION = 'rys_sesion_admin';
 const CLAVE_INTENTOS = 'rys_intentos_admin';
 
-/**
- * Acceso del administrador a la gestión de usuarios.
- *
- * Simulación: las credenciales van en el código para que el proyecto funcione
- * sin servidor. En un banco real vivirían en el servidor, con la contraseña cifrada.
- * Cambia la contraseña antes de entregar el proyecto.
- */
 export class AdministradorService {
-  static USUARIO = 'admin';
-  static #CLAVE = 'Admin2026*';
+  static #administrador = new Administrador('admin', 'Admin2026*');
+
+  static get USUARIO() {
+    return AdministradorService.#administrador.usuario;
+  }
   static MAX_INTENTOS = 3;
   static MINUTOS_BLOQUEO = 5;
 
@@ -47,7 +44,7 @@ export class AdministradorService {
       throw new Error(`Acceso bloqueado temporalmente. Intenta de nuevo en ${minutos}:${segundos}.`);
     }
 
-    if (usuario === AdministradorService.USUARIO && clave === AdministradorService.#CLAVE) {
+    if (usuario === AdministradorService.USUARIO && AdministradorService.#administrador.verificarContrasena(clave)) {
       Almacenamiento.guardarJSON(CLAVE_INTENTOS, { intentos: 0, bloqueadoHasta: 0 });
       Almacenamiento.guardar(CLAVE_SESION, 'true');
       return;

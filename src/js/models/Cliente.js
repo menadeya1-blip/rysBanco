@@ -1,19 +1,20 @@
 import { Cuenta } from './Cuenta.js';
+import { Persona } from './Persona.js';
 import { Validaciones } from '../utils/validaciones.js';
 
 /**
- * Datos del cliente y sus productos bancarios (relación 1..* con Cuenta).
+ * Cliente del banco: es una Persona con datos personales y sus productos (relación 1..* con Cuenta).
+ *
+ * Herencia: usuario, contraseña y sus métodos vienen de Persona.
  * Encapsulamiento: todos los datos son privados y se cambian solo con métodos que validan.
  */
-export class Cliente {
+export class Cliente extends Persona {
   #tipoDocumento;
   #numeroDocumento;
   #nombres;
   #apellidos;
   #celular;
   #correo;
-  #usuario;
-  #contrasena;
   #cuentas;
 
   constructor({ tipoDocumento, numeroDocumento, nombres, apellidos, celular, correo, usuario, contrasena }) {
@@ -21,14 +22,14 @@ export class Cliente {
       throw new Error('El número de documento no es válido para el tipo seleccionado.');
     }
 
+    super(usuario, contrasena);
+
     this.#tipoDocumento = tipoDocumento;
     this.#numeroDocumento = numeroDocumento;
     this.#nombres = nombres.trim();
     this.#apellidos = apellidos.trim();
     this.#celular = celular;
     this.#correo = correo;
-    this.#usuario = usuario;
-    this.#contrasena = contrasena;
     this.#cuentas = [];
   }
 
@@ -60,10 +61,6 @@ export class Cliente {
     return this.#correo;
   }
 
-  get usuario() {
-    return this.#usuario;
-  }
-
   get cuentas() {
     return [...this.#cuentas];
   }
@@ -83,24 +80,6 @@ export class Cliente {
     this.#apellidos = apellidos.trim();
     this.#celular = celular;
     this.#correo = correo;
-  }
-
-  verificarContrasena(clave) {
-    return this.#contrasena === clave;
-  }
-
-  cambiarContrasena(claveActual, claveNueva, confirmacion) {
-    if (!this.verificarContrasena(claveActual)) {
-      throw new Error('La clave actual no es correcta.');
-    }
-    if (claveNueva.length < 8) {
-      throw new Error('La nueva clave debe tener mínimo 8 caracteres.');
-    }
-    if (claveNueva !== confirmacion) {
-      throw new Error('La confirmación no coincide con la nueva clave.');
-    }
-
-    this.#contrasena = claveNueva;
   }
 
   agregarCuenta(cuenta) {
@@ -124,8 +103,7 @@ export class Cliente {
       apellidos: this.#apellidos,
       celular: this.#celular,
       correo: this.#correo,
-      usuario: this.#usuario,
-      contrasena: this.#contrasena,
+      ...super.toJSON(),
       cuentas: this.#cuentas.map((cuenta) => cuenta.toJSON())
     };
   }
